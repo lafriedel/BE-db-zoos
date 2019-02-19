@@ -33,7 +33,7 @@ router.get("/:id", (req, res) => {
         }
     })
     .catch(err => {
-        res.status(500).json({error: "There was an error."};
+        res.status(500).json({error: "There was an error."});
     });
 });
 

@@ -40,7 +40,8 @@ router.post("/", async (req, res) => {
           .status(404)
           .json({ error: "The specified ID does not exist in the database." });
       } else {
-        res.status(200).json(zoo);
+          const [reqZoo] = zoo;
+        res.status(200).json(reqZoo);
       }
     } catch (error) {
       res.status(500).json(error);
