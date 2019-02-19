@@ -69,7 +69,7 @@ router.post("/", async (req, res) => {
     }
   });
   
-  //PUT /api/zoos/:id
+  //PUT /api/zoos/:id -- returns updated record
   router.put("/:id", async (req, res) => {
     try {
       const record = await db("zoos")

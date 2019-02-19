@@ -13,10 +13,10 @@ const errors = {
 router.get("/", (req, res) => {
   db("bears")
     .then(bears => {
-        res.status(200).json(bears);
+      res.status(200).json(bears);
     })
     .catch(err => {
-        res.status(500).json({error: "There was an error."});
+      res.status(500).json({ error: "There was an error." });
     });
 });
 
@@ -25,15 +25,17 @@ router.get("/:id", (req, res) => {
   db("bears")
     .where({ id: req.params.id })
     .then(bear => {
-        if (res) {
-            const [requestedBear] = bear;
-            res.status(200).json(requestedBear);
-        } else {
-            res.status(404).json({error: "A bear with the specified ID does not exist."})
-        }
+      if (res) {
+        const [requestedBear] = bear;
+        res.status(200).json(requestedBear);
+      } else {
+        res
+          .status(404)
+          .json({ error: "A bear with the specified ID does not exist." });
+      }
     })
     .catch(err => {
-        res.status(500).json({error: "There was an error."});
+      res.status(500).json({ error: "There was an error." });
     });
 });
 
@@ -42,7 +44,7 @@ router.post("/", (req, res) => {
   db("bears")
     .insert(req.body)
     .then(id => {
-        const [bearid] = id;
+      const [bearid] = id;
       res.status(201).json(bearid);
     })
     .catch(err => {
@@ -51,4 +53,38 @@ router.post("/", (req, res) => {
     });
 });
 
+// PUT at /api/bears/:id -- returns number of records updated
+router.put("/:id", (req, res) => {
+  db("bears")
+    .where({ id: req.params.id })
+    .update(req.body)
+    .then(count => {
+        if (count > 0) {
+            res.status(200).json(count);
+        } else {
+            res.status(404).json({error: "Record with the specified ID does not exist."})
+        }
+
+    })
+    .catch(err => {
+      res.status(500).json({ error: "There was an error."});
+    });
+});
+
+// DELETE at /api/bears/:id
+router.delete("/:id", (req, res) => {
+  db("bears")
+    .where({ id: req.params.id })
+    .del()
+    .then(count => {
+        if (count > 0) {
+            res.status(200).json(count);
+        } else {
+            res.status(404).json({error: "Record with specified ID does not exist."})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({error: "There was an error."})
+    });
+});
 module.exports = router;
